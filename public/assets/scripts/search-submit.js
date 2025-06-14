@@ -19,30 +19,52 @@ document.getElementById('searchForm').addEventListener('submit', function (e) {
         .then(response => response.json())
         .then(data => {
 
-            console.log(data.flight[0].itineraries[0].duration);
+            console.log(data.flight[0].itineraries[0]);
             console.log(data.flight[0].itineraries[0].segments[0].carrierCode);
 
 
             submitButton.disabled = false;
             submitButton.style.backgroundColor = '#05203C';
 
+            const statusContainer = document.getElementById('status');
             const responseContainer = document.getElementById('response');
+
+            statusContainer.innerHTML = `<p style="color: green;">${data.message}</p>`;
 
             // Check if the response has flights
             if (data.status === true && data.flight.length > 0) {
-                let html = `<p style="color: green;">${data.message}</p><ul>`;
+                let html = `<p hidden style="color: green;">${data.message}</p><ul>`;
 
                 data.flight.forEach(flight => {
+                    const segment = flight.itineraries[0].segments[0];
+                    const itinerary = flight.itineraries[0];
+
                     html += `
-                    <li style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #ccc; border-radius: 8px;">
-                        <strong>Carrier:</strong> ${data.flight[0].itineraries[0].segments[0].carrierCode ?? 'N/A'} <strong>Duration:</strong> ${data.flight[0].itineraries[0].duration ?? 'N/A'}<br>
-                        <strong>Flight Number:</strong> ${data.flight[0].itineraries[0].segments[0].aircraft.code ?? 'N/A'}<br>
-                        <strong>Departure:</strong> ${data.flight[0].itineraries[0].segments[0].departure.iataCode ?? 'N/A'} at ${data.flight[0].itineraries[0].segments[0].departure.at ?? 'N/A'}<br>
-                        <strong>Arrival:</strong> ${data.flight[0].itineraries[0].segments[0].arrival.iataCode ?? 'N/A'} at ${data.flight[0].itineraries[0].segments[0].arrival.at ?? 'N/A'}<br>
-                        <strong>Price:</strong> ${flight.price.currency ?? 'N/A'} ${flight.price.total ?? 'N/A'}
-                    </li>
-                `;
+                       <form method="POST" action="./config/book-flight.php">
+                            <li style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #ccc; border-radius: 8px;">
+                                <input type="hidden" name="carrierCode" value="${flight.itineraries[0].segments[0].carrierCode}">
+                                <input type="hidden" name="flightNumber" value="${flight.itineraries[0].segments[0].number}">
+                                <input type="hidden" name="departureAirport" value="${flight.itineraries[0].segments[0].departure.iataCode}">
+                                <input type="hidden" name="departureTime" value="${flight.itineraries[0].segments[0].departure.at}">
+                                <input type="hidden" name="arrivalAirport" value="${flight.itineraries[0].segments[0].arrival.iataCode}">
+                                <input type="hidden" name="arrivalTime" value="${flight.itineraries[0].segments[0].arrival.at}">
+                                <input type="hidden" name="price" value="${flight.price.total}">
+                                <input type="hidden" name="currency" value="${flight.price.currency}">
+
+                                <div class="flex justify-end mb-6">
+                                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold rounded-lg px-4 py-0.5 cursor-pointer">Book</button>
+                                </div>
+
+                                <strong>Carrier:</strong> ${flight.itineraries[0].segments[0].carrierCode ?? 'N/A'}<br>
+                                <strong>Flight Number:</strong> ${flight.itineraries[0].segments[0].number ?? 'N/A'}<br>
+                                <strong>Departure:</strong> ${flight.itineraries[0].segments[0].departure.iataCode ?? 'N/A'} at ${flight.itineraries[0].segments[0].departure.at ?? 'N/A'}<br>
+                                <strong>Arrival:</strong> ${flight.itineraries[0].segments[0].arrival.iataCode ?? 'N/A'} at ${flight.itineraries[0].segments[0].arrival.at ?? 'N/A'}<br>
+                                <strong>Price:</strong> ${flight.price.currency ?? 'N/A'} ${flight.price.total ?? 'N/A'}
+                            </li>
+                        </form>
+                    `;
                 });
+
 
                 html += `</ul>`;
                 responseContainer.innerHTML = html;

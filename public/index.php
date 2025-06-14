@@ -125,12 +125,15 @@
     </div>
 
 
+
+
     <!-- modal -->
     <div id="flightModal" class="hidden fixed inset-0 bg-[#05203C]/50 backdrop-blur-lg flex items-center justify-center h-screen w-full z-50">
         <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-2xl overflow-y-auto">
             <h2 class="text-xl font-bold mb-4">Flight Details</h2>
             <div id="flightDetailsContent mb-4">Loading flight info...</div>
 
+            <div id="status" class="mb-3"></div>
             <div class="overflow-y-auto h-64">
                 <div id="response"></div>
             </div>
