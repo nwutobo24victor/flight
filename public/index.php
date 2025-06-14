@@ -11,7 +11,6 @@
         .suggestions-box {
             position: absolute;
             background: white;
-            border: 1px solid #ccc;
             width: 250px;
             z-index: 1000;
             max-height: 200px;
@@ -42,17 +41,17 @@
                     <span class="rounded-xl border border-[#05203C] text-[#05203C] py-2 px-6">Cars</span>
                 </p>
 
-                <form method="GET" class="py-6 block mb-3">
+                <form method="POST" saction="./config/search-flights.php" id="searchForm" class="py-6 block mb-3">
                     <div class="flex flex-col lg:flex-row gap-4 mb-3">
                         <div class="block w-full flex-1 p-2 border border-gray-300 rounded-lg">
                             <label for="origin" class="font-semibold text-sm">From</label>
-                            <input type="text" name="origin" id="origin" placeholder="From" class="w-full py-2 focus:outline-none focus:ring-0" required>
+                            <input type="text" name="origin" id="origin" placeholder="From" class="w-full py-2 focus:outline-none focus:ring-0 uppercase" required>
                             <div id="origin-suggestions" class="suggestions-box"></div>
                         </div>
 
                         <div class="block w-full flex-1 p-2 border border-gray-300 rounded-lg">
                             <label for="destination" class="font-semibold text-sm">Destination</label>
-                            <input type="text" name="destination" id="destination" placeholder="Destination" class="w-full py-2 focus:outline-none focus:ring-0" required>
+                            <input type="text" name="destination" id="destination" placeholder="Destination" class="w-full py-2 focus:outline-none focus:ring-0 uppercase" required>
                             <div id="destination-suggestions" class="suggestions-box"></div>
                         </div>
 
@@ -75,6 +74,8 @@
                         </button>
                     </div>
                 </form>
+
+
 
                 <div class="block mb-3">
                     <div class="block lg:flex items-center justify-between w-full space-y-3 ">
@@ -124,7 +125,24 @@
     </div>
 
 
+    <!-- modal -->
+    <div id="flightModal" class="hidden fixed inset-0 bg-[#05203C]/50 backdrop-blur-lg flex items-center justify-center h-screen w-full z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-2xl overflow-y-auto">
+            <h2 class="text-xl font-bold mb-4">Flight Details</h2>
+            <div id="flightDetailsContent mb-4">Loading flight info...</div>
+
+            <div class="overflow-y-auto h-64">
+                <div id="response"></div>
+            </div>
+
+            <button id="closeModal" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Close</button>
+        </div>
+    </div>
+
+
     <script src="./assets/scripts/search-suggestion.js"></script>
+    <script src="./assets/scripts/search-submit.js"></script>
+    <script src="#./assets/scripts/modal-func.js"></script>
 </body>
 
 </html>

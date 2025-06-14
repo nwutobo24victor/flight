@@ -3,6 +3,7 @@
 require 'amadeus-token.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Validate and sanitize input
     $origin = strtoupper(trim($_POST['origin']));
     $destination = strtoupper(trim($_POST['destination']));
     $departure_date = $_POST['departure_date'];
@@ -25,8 +26,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         "Authorization: Bearer $token"
     ]);
 
+
+    // Check for errors in the response
     if (isset($flights['errors'])) {
         $errorMsg = $flights['errors'][0]['detail'] ?? 'Unknown error';
         die("Error: " . $errorMsg);
+    } else {
+
+        //pass the response to the client
+        $data = ["status" => true, "message" => "Flight search results retrieved successfully.", "flight" => $flights['data'],];
+
+        header('Content-Type: application/json');
+        echo json_encode($data);
     }
+} else {
+    die("Invalid request method.");
 }
