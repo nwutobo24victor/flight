@@ -39,5 +39,5 @@ A modern flight booking system built with **PHP** and powered by the **Amadeus S
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/yourusername/flight-booking-php.git
-   cd flight-booking-php
+   git clone https://github.com/nwutobo24victor/flight.git
+   cd flight
